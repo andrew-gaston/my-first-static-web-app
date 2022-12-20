@@ -1,7 +1,23 @@
 ﻿@page "/"
+@inject HttpClient httpClient
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+<br>
+@if (!string.IsNullOrEmpty(message))
+{
+    @message
+}
+
+@code
+{
+    private string? message;
+    protected override async Task OnInitializedAsync()
+    {
+        HttpResponseMessage response = await httpClient.GetAsync("/api/message?name=Andrew");
+        message = await response.Content.ReadAsStringAsync();
+    }
+}
